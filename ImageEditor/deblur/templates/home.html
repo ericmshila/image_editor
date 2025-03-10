@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deblur Image</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .image-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .image-box {
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: #fff;
+            border-radius: 5px;
+            text-align: center;
+            width: 45%;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Upload an Image to Deblur</h2>
+        <input type="file" id="imageInput">
+        <button onclick="uploadImage()">Deblur Image</button>
+
+        <div id="output" class="image-container" style="display: none;">
+            <div class="image-box">
+                <h3>Original Image</h3>
+                <img id="originalImage" src="" alt="Original Image">
+            </div>
+            <div class="image-box">
+                <h3>Deblurred Image</h3>
+                <img id="deblurredImage" src="" alt="Deblurred Image">
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h2>Upload an Image to Convert to Grey Scale</h2>
+        <input type="file" id="imageInput">
+        <button onclick="uploadImage()">Deblur Image</button>
+
+        <div id="output" class="image-container" style="display: none;">
+            <div class="image-box">
+                <h3>Original Image</h3>
+                <img id="originalImage" src="" alt="Original Image">
+            </div>
+            <div class="image-box">
+                <h3>Deblurred Image</h3>
+                <img id="deblurredImage" src="" alt="Deblurred Image">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function uploadImage() {
+            let fileInput = document.getElementById("imageInput");
+            if (!fileInput.files.length) {
+                alert("Please select an image first.");
+                return;
+            }
+
+            let file = fileInput.files[0];
+            let formData = new FormData();
+            formData.append("file", file);
+
+            // Display the original image
+            let originalUrl = URL.createObjectURL(file);
+            document.getElementById("originalImage").src = originalUrl;
+            
+            fetch("/deblur", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                let deblurredUrl = URL.createObjectURL(blob);
+                document.getElementById("deblurredImage").src = deblurredUrl;
+                document.getElementById("output").style.display = "flex";
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+
+</body>
+</html>
