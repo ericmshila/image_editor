@@ -74,6 +74,22 @@
         </div>
     </div>
     <div class="container">
+        <h2>Upload an Image to Convert to GreyScale</h2>
+        <input type="file" id="imageInput">
+        <button onclick="uploadImage()">Greyscale Image</button>
+
+        <div id="output" class="image-container" style="display: none;">
+            <div class="image-box">
+                <h3>Original Image</h3>
+                <img id="originalImage" src="" alt="Original Image">
+            </div>
+            <div class="image-box">
+                <h3>Greyscaled Image</h3>
+                <img id="Greyscaled" src="" alt="Greyscaled Image">
+            </div>
+        </div>
+    </div>
+    <div class="container">
         <h2>Upload an Image to Convert to Grey Scale</h2>
         <input type="file" id="imageInput">
         <button onclick="uploadImage()">Deblur Image</button>
